@@ -66,7 +66,8 @@ var randomCharacter = [];
 
 //Added generatePassword to allow all prompts to pop up when we onclick generate password. Generate password is a part of the write password function.
 
-function generatePassword() {
+//  This becomes the getPasswordOptions function now.
+function getPasswordOptions() {
   var length = parseInt(
     prompt("How many characters would you like your password to contain?")
   );
@@ -102,17 +103,20 @@ function generatePassword() {
   var hasUpperCasedCharacters = confirm(
     "Click OK to confirm including uppercase characters."
   );
-  console.log("passwordLength", length);
+  console.log("length", length);
   console.log("special", hasSpecialCharacters);
   console.log("numbers", hasNumericCharacters);
   console.log("upper", hasUpperCasedCharacters);
   console.log("lower", hasLowerCasedCharacters);
 
+  //  Need to include the length that the user entered
+  // We also been to pass the response from the prompt (true or false); not the array itself
   var password = {
-    specialArray: specialArray,
-    upperArray: upperArray,
-    lowerArray: lowerArray,
-    numberArray: numberArray,
+    length: length,
+    specialArray: hasSpecialCharacters,
+    upperArray: hasUpperCasedCharacters,
+    lowerArray: hasLowerCasedCharacters,
+    numberArray: hasNumericCharacters,
   };
   return password;
 }
@@ -124,56 +128,70 @@ function getRandom(array) {
   return randElement;
 }
 
-var characters = generatePassword();
+//  This function is being called inside the writePassword function so it is not needed here.
+// Now the prompts will not be triggered until the Generate Password button is clicked.
+// var characters = generatePassword();
 
-var finalPassword = [];
+//  This becomes the generatePassword function now.
+function generatePassword() {
+  //  There are the options that are returned from the function call.
+  var options = getPasswordOptions();
+  console.log(options)
+  var finalPassword = [];
 
-var possiblePassword = [];
+  var possiblePassword = [];
 
-var guranteedPassword = [];
+  var guaranteedPassword = [];
 
-if (generatePassword.hasLowerCasedCharacters) {
-  possiblePassword = possiblePassword.concat(lowerArray);
+  // Replaced generatePassword object with options
+  // We also need to reference the correct properties off the object
+  if (options.lowerArray) {
+    possiblePassword = possiblePassword.concat(lowerArray);
 
-  guranteedPassword.push(getRandom(hasLowerCasedCharacters));
+    guaranteedPassword.push(getRandom(lowerArray));
+  }
+
+  if (options.upperArray) {
+    possiblePassword = possiblePassword.concat(upperArray);
+
+    guaranteedPassword.push(getRandom(upperArray));
+  }
+
+  if (options.numberArray) {
+    possiblePassword = possiblePassword.concat(numberArray);
+    guaranteedPassword.push(getRandom(numberArray));
+  }
+
+  if (options.specialArray) {
+    possiblePassword = possiblePassword.concat(specialArray);
+    guaranteedPassword.push(getRandom(specialArray));
+  }
+
+  //  here we are getting the random characters
+  for (var i = 0; i < options.length; i++) {
+    var character = getRandom(possiblePassword);
+
+    finalPassword.push(character);
+  }
+
+  //  This is to ensure that one character of each asked for character set is added
+  for (var i = 0; i < guaranteedPassword.length; i++) {
+    finalPassword[i] = guaranteedPassword[i];
+    console.log(finalPassword);
+  }
+  
+  //  This needs to returned outside of the for loop
+  return finalPassword.join("");
 }
 
-if (generatePassword.hasUpperCasedCharacters) {
-  possiblePassword = possiblePassword.concat(upperArray);
-
-  guranteedPassword.push(getRandom(hasUpperCasedCharacters));
-}
-
-if (generatePassword.hasNumericCharacters) {
-  possiblePassword = possiblePassword.concat(numberArray);
-  guranteedPassword.push(getRandom(hasNumericCharacters));
-}
-
-if (generatePassword.hasSpecialCharacters) {
-  possiblePassword = possiblePassword.concat(specialArray);
-  guranteedPassword.push(getRandom(hasSpecialCharacters));
-}
-
-for (var i = 0; i < generatePassword.length; i++) {
-  var possiblePassword = getRandom(possiblePassword);
-
-  finalPassword.push(possiblePassword);
-}
-
-for (var i = 0; i < guranteedPassword.length; i++) {
-  finalPassword[i] = guranteedPassword[i];
-  console.log(finalPassword);
-  // return finalPassword.join(", ");
-}
 
 function writePassword() {
   console.log("buttonclick");
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
-  passwordText.value = "Your password is" + password;
+  passwordText.value = password;
 }
 
 generateBtn.addEventListener("click", writePassword);
 // Write password to the #password input
-
