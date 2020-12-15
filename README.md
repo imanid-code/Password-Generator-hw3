@@ -48,5 +48,8 @@ If  the user does ***NOT*** click OK to confirm one of the questions to include 
 
 If the user does NOT chose atleast of the 4 characters, the website will redirect them to the start. 
 
-![preview] (assets/preview.png)
+![preview](assets/preview.png)
 
+***Technology***
+
+ ```Bootstrap```   ```HTML```   ```CSS```
