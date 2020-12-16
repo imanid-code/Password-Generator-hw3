@@ -23,6 +23,11 @@ Next the user will be prompted to answer the first of 5 questions. First the use
 
 ![prompt1](assets/prompt1.png)
 
+If the user does not enter a number between 8-128 they will receive an alert that says either of the following: 
+
+![length](assets/length1.png)
+![length](assets/length2.png)
+
 Followed by the previous prompt the user will be asked to confirm that it is OK to include special characters. The special characters include the following: !,@,#,$,%,^,&,*. 
 
 ![confirm](assets/confirm1.png)
@@ -49,6 +54,7 @@ If  the user does ***NOT*** click OK to confirm one of the questions to include 
 If the user does NOT chose atleast of the 4 characters, the website will redirect them to the start. 
 
 ![preview](assets/preview.png)
+
 
 ***Technology***
 

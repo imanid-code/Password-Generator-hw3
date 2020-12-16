@@ -68,9 +68,16 @@ var randomCharacter = [];
 
 //  This becomes the getPasswordOptions function now.
 function getPasswordOptions() {
-  var length = parseInt(
+  var length = 
     prompt("How many characters would you like your password to contain?")
-  );
+    if (parseInt(length) < 8) {
+      alert("Password length must be at least 8 characters");
+    }
+    
+    if (length > 128) {
+      alert("Password length must less than 129 characters");
+      length = prompt("How many characters would you like your password to contain?");
+    }
   // Conditional statement to check if password length is a number. Prompts end if this evaluates false
   if (isNaN(length) === true) {
     alert("Password length must be provided as a number");
@@ -79,11 +86,13 @@ function getPasswordOptions() {
   // Conditional statement to check if password length is at least 8 characters long. Prompts end if this evaluates false
   if (length < 8) {
     alert("Password length must be at least 8 characters");
+    length = prompt("How many characters would you like your password to contain?");
     //return;
   }
   // Conditional statement to check if password length is less than 128 characters long. Prompts end if this evaluates false
   if (length > 128) {
     alert("Password length must less than 129 characters");
+    length = prompt("How many characters would you like your password to contain?");
     //return;
   }
   // Variable to store boolean regarding the inclusion of special characters
@@ -108,6 +117,14 @@ function getPasswordOptions() {
   console.log("numbers", hasNumericCharacters);
   console.log("upper", hasUpperCasedCharacters);
   console.log("lower", hasLowerCasedCharacters);
+
+ if (hasSpecialCharacters === false && 
+      hasUpperCasedCharacters === false &&
+      hasLowerCasedCharacters === false &&
+      hasNumericCharacters === false){
+alert("Password must contain atleast 1 character type! Character types include: number (1-9), upper(A-Z), lower (a-z) and special(!@#$%^&*) ")
+ }
+
 
   //  Need to include the length that the user entered
   // We also been to pass the response from the prompt (true or false); not the array itself
